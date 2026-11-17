@@ -38,13 +38,19 @@ https://raw.githubusercontent.com/kasnysys/vps.github.io/main/vless.json
 
 | Сервер | Адрес | Flow | Reality SNI |
 |---|---|---|---|
-| 🇬🇧 Великобритания | 203.57.82.107 | — | api-io-mgr.galioncc.com |
-| 🇳🇱 Нидерланды | 5.253.86.3 | vision | nl3.gofizz.in |
+| 🇬🇧 Великобритания #1 | 203.57.82.107 | — | api-io-mgr.galioncc.com |
+| 🇬🇧 Великобритания #2 | 203.57.82.107 | — | api-io-mgr.galioncc.com |
+| 🇳🇱 Нидерланды #1 | 5.253.86.3 | vision | nl3.gofizz.in |
+| 🇳🇱 Нидерланды #2 | 5.253.86.3 | vision | nl3.gofizz.in |
 | 🇫🇷 Франция | 163.245.42.85 | vision | mother-earth.fyi |
 | 🇸🇪 Швеция | 88.216.60.73 | — | ns-api-gw.galioncc.com |
 | 🇷🇺 Родина | 94.139.250.226 | — | net-api-ctl.galioncc.com |
 
-Все на `443`, `tcp`, `security=reality`, `fp=firefox`. Нидерланды, Франция и Родина — с `flow=xtls-rprx-vision`, остальные без flow.
+Все на `443`, `tcp`, `security=reality`, `fp=firefox`. Нидерланды, Франция — с
+`flow=xtls-rprx-vision`, остальные без flow. Пары `#1`/`#2` — одинаковые серверы
+отдельным слотами (свой socks-пароль и своя запись в Happ), так что если один
+слот отвалился, второй остаётся в списке.
+
 
 ## Обход
 

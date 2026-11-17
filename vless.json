@@ -1,6 +1,6 @@
 [
   {
-    "remarks": "🇬🇧 Великобритания",
+    "remarks": "🇬🇧 Великобритания #1",
     "api": {
       "listen": "[::1]:10085",
       "services": [
@@ -42,7 +42,7 @@
         "settings": {
           "accounts": [
             {
-              "user": "happ_user"
+              "user": "happ-socks"
             }
           ],
           "auth": "password",
@@ -175,7 +175,183 @@
     "stats": {}
   },
   {
-    "remarks": "🇳🇱 Нидерланды",
+    "remarks": "🇬🇧 Великобритания #2",
+    "api": {
+      "listen": "[::1]:10085",
+      "services": [
+        "StatsService"
+      ],
+      "tag": "api"
+    },
+    "dns": {
+      "hosts": {
+        "domain:googleapis.cn": "googleapis.com"
+      },
+      "queryStrategy": "UseIP",
+      "servers": [
+        "1.1.1.1",
+        {
+          "address": "1.1.1.1",
+          "domains": [],
+          "port": 53
+        },
+        {
+          "address": "8.8.8.8",
+          "domains": [
+            "domain:bank.com",
+            "domain:gov.ru",
+            "domain:ru",
+            "domain:su",
+            "domain:рф",
+            "domain:xn--p1ai"
+          ],
+          "port": 53
+        }
+      ]
+    },
+    "inbounds": [
+      {
+        "listen": "127.0.0.1",
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "accounts": [
+            {
+              "user": "happ-socks",
+              "pass": "lwy6SKc1LA1t"
+            }
+          ],
+          "auth": "password",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      }
+    ],
+    "log": {
+      "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
+      "dnsLog": true,
+      "error": "/data/user/0/com.happproxy/files/logs/error/1794920000001_error_log.txt",
+      "loglevel": "debug"
+    },
+    "outbounds": [
+      {
+        "mux": {
+          "concurrency": -1,
+          "enabled": false,
+          "xudpConcurrency": 8,
+          "xudpProxyUDP443": ""
+        },
+        "protocol": "vless",
+        "settings": {
+          "address": "203.57.82.107",
+          "encryption": "none",
+          "flow": "",
+          "id": "a30903dc-1bf0-4be5-8b1b-603a3a56211c",
+          "level": 8,
+          "port": 443,
+          "security": "auto"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "realitySettings": {
+            "fingerprint": "firefox",
+            "publicKey": "drl7nndYdfzZY1aQ0eUAWmNV0nsHig2uDnu9siy9biQ",
+            "serverName": "api-io-mgr.galioncc.com",
+            "shortId": "9a3f6c21d8e047b5",
+            "show": false
+          },
+          "security": "reality",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        },
+        "tag": "proxy"
+      },
+      {
+        "protocol": "freedom",
+        "tag": "direct"
+      },
+      {
+        "protocol": "blackhole",
+        "tag": "block"
+      }
+    ],
+    "policy": {
+      "levels": {
+        "8": {
+          "connIdle": 300,
+          "downlinkOnly": 1,
+          "handshake": 4,
+          "uplinkOnly": 1
+        }
+      },
+      "system": {
+        "statsOutboundUplink": true,
+        "statsOutboundDownlink": true
+      }
+    },
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "ip": [
+            "1.1.1.1"
+          ],
+          "outboundTag": "proxy",
+          "port": "53"
+        },
+        {
+          "ip": [
+            "8.8.8.8"
+          ],
+          "outboundTag": "direct",
+          "port": "53"
+        },
+        {
+          "domain": [
+            "geosite:category-ads-all"
+          ],
+          "outboundTag": "block"
+        },
+        {
+          "domain": [
+            "domain:bank.com",
+            "domain:gov.ru",
+            "domain:ru",
+            "domain:su",
+            "domain:рф",
+            "domain:xn--p1ai"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "ip": [
+            "10.0.0.0/8",
+            "172.16.0.0/12",
+            "192.168.0.0/16",
+            "169.254.0.0/16",
+            "224.0.0.0/4",
+            "255.255.255.255"
+          ],
+          "outboundTag": "direct"
+        }
+      ]
+    },
+    "stats": {}
+  },
+  {
+    "remarks": "🇳🇱 Нидерланды #1",
     "api": {
       "listen": "[::1]:10085",
       "services": [
@@ -239,7 +415,183 @@
     "log": {
       "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
       "dnsLog": true,
-      "error": "/data/user/0/com.happproxy/files/logs/error/1794920000001_error_log.txt",
+      "error": "/data/user/0/com.happproxy/files/logs/error/1794920000002_error_log.txt",
+      "loglevel": "debug"
+    },
+    "outbounds": [
+      {
+        "mux": {
+          "concurrency": -1,
+          "enabled": false,
+          "xudpConcurrency": 8,
+          "xudpProxyUDP443": ""
+        },
+        "protocol": "vless",
+        "settings": {
+          "address": "5.253.86.3",
+          "encryption": "none",
+          "flow": "xtls-rprx-vision",
+          "id": "8197b9b9-8945-460f-99c9-325ef8a8a7c3",
+          "level": 8,
+          "port": 443,
+          "security": "auto"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "realitySettings": {
+            "fingerprint": "firefox",
+            "publicKey": "51ZCyVOxvcD_smARtd9mV-3Rh_WurOzMGRFxk9u2Kgo",
+            "serverName": "nl3.gofizz.in",
+            "shortId": "fa1754221e4c5f9e",
+            "show": false
+          },
+          "security": "reality",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        },
+        "tag": "proxy"
+      },
+      {
+        "protocol": "freedom",
+        "tag": "direct"
+      },
+      {
+        "protocol": "blackhole",
+        "tag": "block"
+      }
+    ],
+    "policy": {
+      "levels": {
+        "8": {
+          "connIdle": 300,
+          "downlinkOnly": 1,
+          "handshake": 4,
+          "uplinkOnly": 1
+        }
+      },
+      "system": {
+        "statsOutboundUplink": true,
+        "statsOutboundDownlink": true
+      }
+    },
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "ip": [
+            "1.1.1.1"
+          ],
+          "outboundTag": "proxy",
+          "port": "53"
+        },
+        {
+          "ip": [
+            "8.8.8.8"
+          ],
+          "outboundTag": "direct",
+          "port": "53"
+        },
+        {
+          "domain": [
+            "geosite:category-ads-all"
+          ],
+          "outboundTag": "block"
+        },
+        {
+          "domain": [
+            "domain:bank.com",
+            "domain:gov.ru",
+            "domain:ru",
+            "domain:su",
+            "domain:рф",
+            "domain:xn--p1ai"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "ip": [
+            "10.0.0.0/8",
+            "172.16.0.0/12",
+            "192.168.0.0/16",
+            "169.254.0.0/16",
+            "224.0.0.0/4",
+            "255.255.255.255"
+          ],
+          "outboundTag": "direct"
+        }
+      ]
+    },
+    "stats": {}
+  },
+  {
+    "remarks": "🇳🇱 Нидерланды #2",
+    "api": {
+      "listen": "[::1]:10085",
+      "services": [
+        "StatsService"
+      ],
+      "tag": "api"
+    },
+    "dns": {
+      "hosts": {
+        "domain:googleapis.cn": "googleapis.com"
+      },
+      "queryStrategy": "UseIP",
+      "servers": [
+        "1.1.1.1",
+        {
+          "address": "1.1.1.1",
+          "domains": [],
+          "port": 53
+        },
+        {
+          "address": "8.8.8.8",
+          "domains": [
+            "domain:bank.com",
+            "domain:gov.ru",
+            "domain:ru",
+            "domain:su",
+            "domain:рф",
+            "domain:xn--p1ai"
+          ],
+          "port": 53
+        }
+      ]
+    },
+    "inbounds": [
+      {
+        "listen": "127.0.0.1",
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "accounts": [
+            {
+              "user": "happ-socks",
+              "pass": "JxjtG8eDkvWQ"
+            }
+          ],
+          "auth": "password",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      }
+    ],
+    "log": {
+      "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
+      "dnsLog": true,
+      "error": "/data/user/0/com.happproxy/files/logs/error/1794920000003_error_log.txt",
       "loglevel": "debug"
     },
     "outbounds": [
@@ -415,7 +767,7 @@
     "log": {
       "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
       "dnsLog": true,
-      "error": "/data/user/0/com.happproxy/files/logs/error/1794920000002_error_log.txt",
+      "error": "/data/user/0/com.happproxy/files/logs/error/1794920000004_error_log.txt",
       "loglevel": "debug"
     },
     "outbounds": [
@@ -590,7 +942,7 @@
     "log": {
       "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
       "dnsLog": true,
-      "error": "/data/user/0/com.happproxy/files/logs/error/1794920000003_error_log.txt",
+      "error": "/data/user/0/com.happproxy/files/logs/error/1794920000005_error_log.txt",
       "loglevel": "debug"
     },
     "outbounds": [
@@ -766,7 +1118,7 @@
     "log": {
       "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
       "dnsLog": true,
-      "error": "/data/user/0/com.happproxy/files/logs/error/1794920000004_error_log.txt",
+      "error": "/data/user/0/com.happproxy/files/logs/error/1794920000006_error_log.txt",
       "loglevel": "debug"
     },
     "outbounds": [
