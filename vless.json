@@ -1,0 +1,559 @@
+[
+  {
+    "remarks": "нидерланды TEST",
+    "api": {
+      "listen": "[::1]:10085",
+      "services": [
+        "StatsService"
+      ],
+      "tag": "api"
+    },
+    "dns": {
+      "hosts": {
+        "cloudflare-dns.com": "1.1.1.1",
+        "dns.google": "8.8.8.8",
+        "domain:googleapis.cn": "googleapis.com"
+      },
+      "queryStrategy": "UseIP",
+      "servers": [
+        "https://cloudflare-dns.com/dns-query",
+        {
+          "address": "https://cloudflare-dns.com/dns-query",
+          "domains": []
+        },
+        {
+          "address": "https://dns.google/dns-query",
+          "domains": [
+            "domain:bank.com",
+            "domain:gov.ru",
+            "domain:ru",
+            "domain:su",
+            "domain:рф",
+            "domain:xn--p1ai",
+            "geosite:ru",
+            "geosite:cn",
+            "geosite:private"
+          ]
+        }
+      ]
+    },
+    "inbounds": [
+      {
+        "listen": "127.0.0.1",
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "accounts": [
+            {
+              "user": "happ_user"
+            }
+          ],
+          "auth": "password",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      }
+    ],
+    "log": {
+      "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
+      "dnsLog": true,
+      "error": "/data/user/0/com.happproxy/files/logs/error/1794911881203_error_log.txt",
+      "loglevel": "debug"
+    },
+    "outbounds": [
+      {
+        "mux": {
+          "concurrency": -1,
+          "enabled": false,
+          "xudpConcurrency": 8,
+          "xudpProxyUDP443": ""
+        },
+        "protocol": "vless",
+        "settings": {
+          "address": "nl-s-2-b1.pythonmakemigreat.wiki",
+          "encryption": "none",
+          "flow": "xtls-rprx-vision",
+          "id": "f8d52ece-fad4-478d-875d-df6eed3befa7",
+          "level": 8,
+          "port": 443,
+          "security": "auto"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "realitySettings": {
+            "echConfigList": "",
+            "fingerprint": "firefox",
+            "mldsa65Verify": "",
+            "pinnedPeerCertSha256": "",
+            "publicKey": "ZqVz1kWNxh_5zQ5PPkoPHoaXQOvppM0ZyIo8uKp2dCg",
+            "serverName": "nl-s-2-b1.pythonmakemigreat.wiki",
+            "shortId": "a3565610aa574a6e",
+            "show": false,
+            "spiderX": ""
+          },
+          "security": "reality",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        },
+        "tag": "proxy"
+      },
+      {
+        "protocol": "freedom",
+        "tag": "direct"
+      },
+      {
+        "protocol": "blackhole",
+        "tag": "block"
+      }
+    ],
+    "policy": {
+      "levels": {
+        "8": {
+          "connIdle": 300,
+          "downlinkOnly": 1,
+          "handshake": 4,
+          "uplinkOnly": 1
+        }
+      },
+      "system": {
+        "statsOutboundUplink": true,
+        "statsOutboundDownlink": true
+      }
+    },
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "ip": [
+            "1.1.1.1"
+          ],
+          "outboundTag": "proxy",
+          "port": "443"
+        },
+        {
+          "ip": [
+            "8.8.8.8"
+          ],
+          "outboundTag": "direct",
+          "port": "443"
+        },
+        {
+          "domain": [
+            "geosite:category-ads-all"
+          ],
+          "outboundTag": "block"
+        },
+        {
+          "domain": [
+            "domain:bank.com",
+            "domain:gov.ru",
+            "domain:ru",
+            "domain:su",
+            "domain:рф",
+            "domain:xn--p1ai",
+            "geosite:ru",
+            "geosite:cn",
+            "geosite:private"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "ip": [
+            "10.0.0.0/8",
+            "172.16.0.0/12",
+            "192.168.0.0/16",
+            "169.254.0.0/16",
+            "224.0.0.0/4",
+            "255.255.255.255",
+            "geoip:ru",
+            "geoip:cn"
+          ],
+          "outboundTag": "direct"
+        }
+      ]
+    },
+    "stats": {}
+  },
+  {
+    "remarks": "финлядия",
+    "api": {
+      "listen": "[::1]:10085",
+      "services": [
+        "StatsService"
+      ],
+      "tag": "api"
+    },
+    "dns": {
+      "hosts": {
+        "cloudflare-dns.com": "1.1.1.1",
+        "dns.google": "8.8.8.8",
+        "domain:googleapis.cn": "googleapis.com"
+      },
+      "queryStrategy": "UseIP",
+      "servers": [
+        "https://cloudflare-dns.com/dns-query",
+        {
+          "address": "https://cloudflare-dns.com/dns-query",
+          "domains": []
+        },
+        {
+          "address": "https://dns.google/dns-query",
+          "domains": [
+            "domain:bank.com",
+            "domain:gov.ru",
+            "domain:ru",
+            "domain:su",
+            "domain:рф",
+            "domain:xn--p1ai",
+            "geosite:ru",
+            "geosite:cn",
+            "geosite:private"
+          ]
+        }
+      ]
+    },
+    "inbounds": [
+      {
+        "listen": "127.0.0.1",
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "accounts": [
+            {
+              "user": "happ_user"
+            }
+          ],
+          "auth": "password",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      }
+    ],
+    "log": {
+      "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
+      "dnsLog": true,
+      "error": "/data/user/0/com.happproxy/files/logs/error/1794911902847_error_log.txt",
+      "loglevel": "debug"
+    },
+    "outbounds": [
+      {
+        "mux": {
+          "concurrency": -1,
+          "enabled": false,
+          "xudpConcurrency": 8,
+          "xudpProxyUDP443": ""
+        },
+        "protocol": "vless",
+        "settings": {
+          "address": "fi-b2.golangwikito.cfd",
+          "encryption": "none",
+          "flow": "xtls-rprx-vision",
+          "id": "f8d52ece-fad4-478d-875d-df6eed3befa7",
+          "level": 8,
+          "port": 443,
+          "security": "auto"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "realitySettings": {
+            "echConfigList": "",
+            "fingerprint": "firefox",
+            "mldsa65Verify": "",
+            "pinnedPeerCertSha256": "",
+            "publicKey": "ZqVz1kWNxh_5zQ5PPkoPHoaXQOvppM0ZyIo8uKp2dCg",
+            "serverName": "fi-b2.golangwikito.cfd",
+            "shortId": "bdf5852d1423e694",
+            "show": false,
+            "spiderX": ""
+          },
+          "security": "reality",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        },
+        "tag": "proxy"
+      },
+      {
+        "protocol": "freedom",
+        "tag": "direct"
+      },
+      {
+        "protocol": "blackhole",
+        "tag": "block"
+      }
+    ],
+    "policy": {
+      "levels": {
+        "8": {
+          "connIdle": 300,
+          "downlinkOnly": 1,
+          "handshake": 4,
+          "uplinkOnly": 1
+        }
+      },
+      "system": {
+        "statsOutboundUplink": true,
+        "statsOutboundDownlink": true
+      }
+    },
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "ip": [
+            "1.1.1.1"
+          ],
+          "outboundTag": "proxy",
+          "port": "443"
+        },
+        {
+          "ip": [
+            "8.8.8.8"
+          ],
+          "outboundTag": "direct",
+          "port": "443"
+        },
+        {
+          "domain": [
+            "geosite:category-ads-all"
+          ],
+          "outboundTag": "block"
+        },
+        {
+          "domain": [
+            "domain:bank.com",
+            "domain:gov.ru",
+            "domain:ru",
+            "domain:su",
+            "domain:рф",
+            "domain:xn--p1ai",
+            "geosite:ru",
+            "geosite:cn",
+            "geosite:private"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "ip": [
+            "10.0.0.0/8",
+            "172.16.0.0/12",
+            "192.168.0.0/16",
+            "169.254.0.0/16",
+            "224.0.0.0/4",
+            "255.255.255.255",
+            "geoip:ru",
+            "geoip:cn"
+          ],
+          "outboundTag": "direct"
+        }
+      ]
+    },
+    "stats": {}
+  },
+  {
+    "remarks": "🇨🇭 Швейцария #1",
+    "api": {
+      "listen": "[::1]:10085",
+      "services": [
+        "StatsService"
+      ],
+      "tag": "api"
+    },
+    "dns": {
+      "hosts": {
+        "cloudflare-dns.com": "1.1.1.1",
+        "dns.google": "8.8.8.8",
+        "domain:googleapis.cn": "googleapis.com"
+      },
+      "queryStrategy": "UseIP",
+      "servers": [
+        "https://cloudflare-dns.com/dns-query",
+        {
+          "address": "https://cloudflare-dns.com/dns-query",
+          "domains": []
+        },
+        {
+          "address": "https://dns.google/dns-query",
+          "domains": [
+            "domain:bank.com",
+            "domain:gov.ru",
+            "domain:ru",
+            "domain:su",
+            "domain:рф",
+            "domain:xn--p1ai",
+            "geosite:ru",
+            "geosite:cn",
+            "geosite:private"
+          ]
+        }
+      ]
+    },
+    "inbounds": [
+      {
+        "listen": "127.0.0.1",
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "accounts": [
+            {
+              "user": "happ_user"
+            }
+          ],
+          "auth": "password",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      }
+    ],
+    "log": {
+      "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
+      "dnsLog": true,
+      "error": "/data/user/0/com.happproxy/files/logs/error/1794911913379_error_log.txt",
+      "loglevel": "debug"
+    },
+    "outbounds": [
+      {
+        "mux": {
+          "concurrency": -1,
+          "enabled": false,
+          "xudpConcurrency": 8,
+          "xudpProxyUDP443": ""
+        },
+        "protocol": "vless",
+        "settings": {
+          "address": "85.155.183.228",
+          "encryption": "none",
+          "flow": "xtls-rprx-vision",
+          "id": "1157d3c2-58a6-4b34-8d8e-9a66b0a97379",
+          "level": 8,
+          "port": 443,
+          "security": "auto"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "realitySettings": {
+            "fingerprint": "firefox",
+            "publicKey": "HiYyQ8Crfz_F945a8exFTWSH_5zjoR0kqhry2-8Obhk",
+            "serverName": "node-sw1.ainsight.ru",
+            "shortId": "0faff85d8a8ae779",
+            "show": false
+          },
+          "security": "reality",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        },
+        "tag": "proxy"
+      },
+      {
+        "protocol": "freedom",
+        "tag": "direct"
+      },
+      {
+        "protocol": "blackhole",
+        "tag": "block"
+      }
+    ],
+    "policy": {
+      "levels": {
+        "8": {
+          "connIdle": 300,
+          "downlinkOnly": 1,
+          "handshake": 4,
+          "uplinkOnly": 1
+        }
+      },
+      "system": {
+        "statsOutboundUplink": true,
+        "statsOutboundDownlink": true
+      }
+    },
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "ip": [
+            "1.1.1.1"
+          ],
+          "outboundTag": "proxy",
+          "port": "443"
+        },
+        {
+          "ip": [
+            "8.8.8.8"
+          ],
+          "outboundTag": "direct",
+          "port": "443"
+        },
+        {
+          "domain": [
+            "geosite:category-ads-all"
+          ],
+          "outboundTag": "block"
+        },
+        {
+          "domain": [
+            "domain:bank.com",
+            "domain:gov.ru",
+            "domain:ru",
+            "domain:su",
+            "domain:рф",
+            "domain:xn--p1ai",
+            "geosite:ru",
+            "geosite:cn",
+            "geosite:private"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "ip": [
+            "10.0.0.0/8",
+            "172.16.0.0/12",
+            "192.168.0.0/16",
+            "169.254.0.0/16",
+            "224.0.0.0/4",
+            "255.255.255.255",
+            "geoip:ru",
+            "geoip:cn"
+          ],
+          "outboundTag": "direct"
+        }
+      ]
+    },
+    "stats": {}
+  }
+]
