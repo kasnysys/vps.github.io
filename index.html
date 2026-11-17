@@ -39,8 +39,9 @@
   }
   button:active{transform:scale(.98)}
   button.pri{background:var(--acc); color:#04211c; border-color:transparent}
+  button.wide{width:100%;margin-top:10px}
   .srv{display:flex; align-items:center; gap:12px; padding:12px 0; border-top:1px solid var(--line)}
-  .srv:first-of-type{border-top:0}
+  .srv:first-child{border-top:0}
   .flag{font-size:24px;line-height:1}
   .srv .info{flex:1;min-width:0}
   .srv .name{font-weight:600;font-size:15px}
@@ -49,7 +50,6 @@
   ol{margin:0;padding-left:20px;color:var(--dim);font-size:14px}
   ol li{margin-bottom:8px}
   ol b{color:var(--txt);font-weight:600}
-  code.inl{background:var(--card2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13px;color:var(--acc)}
   .note{
     background:rgba(250,204,21,.08); border:1px solid rgba(250,204,21,.25);
     color:#fde68a; border-radius:12px; padding:12px 14px; font-size:13px;
@@ -67,48 +67,23 @@
 <body>
 <div class="wrap">
   <h1>vless json</h1>
-  <p class="sub">3 сервера · Reality · TCP · обход .ru и локальных сетей</p>
+  <p class="sub" id="countLine">подписка · xray</p>
 
   <div class="card">
-    <div class="label">Ссылка подписки (json)</div>
+    <div class="label">Ссылка подписки</div>
     <div class="url">
       <code id="subUrl">https://kasnysys.github.io/vps.github.io/vless.json</code>
-      <button class="pri" onclick="copyEl('subUrl',this)">Копировать</button>
+      <button class="pri" onclick="copyEl('subUrl')">Копировать</button>
     </div>
     <p style="color:var(--dim);font-size:13px;margin:12px 0 0">
-      Happ → <b>Подписки</b> → «+» → «Ссылка» → вставить.
+      Happ → <b>Подписки</b> → «+» → «Ссылка» → вставить → «Обновить».
     </p>
+    <a href="vless.json" download><button class="wide">Скачать vless.json</button></a>
   </div>
 
   <div class="card">
     <h2>Серверы</h2>
-
-    <div class="srv">
-      <div class="flag">🇳🇱</div>
-      <div class="info">
-        <div class="name">Нидерланды</div>
-        <div class="meta">nl-s-2-b1.pythonmakemigreat.wiki:443</div>
-      </div>
-      <button onclick="copyServer(0,this)">JSON</button>
-    </div>
-
-    <div class="srv">
-      <div class="flag">🇫🇮</div>
-      <div class="info">
-        <div class="name">Финляндия</div>
-        <div class="meta">fi-b2.golangwikito.cfd:443</div>
-      </div>
-      <button onclick="copyServer(1,this)">JSON</button>
-    </div>
-
-    <div class="srv">
-      <div class="flag">🇨🇭</div>
-      <div class="info">
-        <div class="name">Швейцария</div>
-        <div class="meta">85.155.183.228:443</div>
-      </div>
-      <button onclick="copyServer(2,this)">JSON</button>
-    </div>
+    <div id="servers"><p style="color:var(--dim);font-size:14px;margin:0">Загрузка…</p></div>
   </div>
 
   <div class="card">
@@ -117,11 +92,10 @@
       <li>Скопируй <b>ссылку подписки</b> выше.</li>
       <li>Happ → <b>Подписки</b> → «+» → <b>Ссылка</b>.</li>
       <li>Вставить, сохранить, «Обновить».</li>
-      <li>Появятся 3 сервера — выбирай любой.</li>
+      <li>Появятся все серверы — выбирай любой.</li>
     </ol>
     <p style="color:var(--dim);font-size:13px;margin:14px 0 0">
-      Не ест json по ссылке — скачай <a href="vless.json">vless.json</a> и импортируй файлом:
-      Happ → «+» → <b>Из файла</b>. Или жми <b>JSON</b> у сервера и вставляй из буфера.
+      Нужен один сервер? Жми <b>JSON</b> у него и в Happ: «+» → <b>Импорт из буфера обмена</b>.
     </p>
   </div>
 
@@ -129,143 +103,50 @@
     Внутри json лежат ключи серверов. Кто получит ссылку — сможет подключиться. Не раздавай зря.
   </div>
 
-  <p class="foot">vless.json · 3 конфига</p>
+  <p class="foot" id="foot">vless.json</p>
 </div>
 
 <div class="toast" id="toast">Скопировано</div>
 
 <script>
-const SERVERS = [
-  {
-    tag: "proxy",
-    address: "nl-s-2-b1.pythonmakemigreat.wiki",
-    id: "f8d52ece-fad4-478d-875d-df6eed3befa7",
-    pbk: "ZqVz1kWNxh_5zQ5PPkoPHoaXQOvppM0ZyIo8uKp2dCg",
-    sid: "a3565610aa574a6e",
-    sni: "nl-s-2-b1.pythonmakemigreat.wiki"
-  },
-  {
-    tag: "proxy",
-    address: "fi-b2.golangwikito.cfd",
-    id: "f8d52ece-fad4-478d-875d-df6eed3befa7",
-    pbk: "ZqVz1kWNxh_5zQ5PPkoPHoaXQOvppM0ZyIo8uKp2dCg",
-    sid: "bdf5852d1423e694",
-    sni: "fi-b2.golangwikito.cfd"
-  },
-  {
-    tag: "proxy",
-    address: "85.155.183.228",
-    id: "1157d3c2-58a6-4b34-8d8e-9a66b0a97379",
-    pbk: "HiYyQ8Crfz_F945a8exFTWSH_5zjoR0kqhry2-8Obhk",
-    sid: "0faff85d8a8ae779",
-    sni: "node-sw1.ainsight.ru"
-  }
-];
+let CONFIGS = null;
 
-const RU_DIRECT = [
-  "domain:bank.com",
-  "domain:gov.ru",
-  "domain:ru",
-  "domain:su",
-  "domain:рф",
-  "domain:xn--p1ai",
-  "geosite:cn",
-  "geosite:private"
-];
+function load(){
+  return fetch('vless.json', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(d => { CONFIGS = d; return d; });
+}
 
-function buildConfig(s){
-  return {
-    api: { listen: "[::1]:10085", services: ["StatsService"], tag: "api" },
-    dns: {
-      hosts: {
-        "cloudflare-dns.com": "1.1.1.1",
-        "dns.google": "8.8.8.8",
-        "domain:googleapis.cn": "googleapis.com"
-      },
-      queryStrategy: "UseIP",
-      servers: [
-        "https://cloudflare-dns.com/dns-query",
-        { address: "https://cloudflare-dns.com/dns-query", domains: [] },
-        { address: "https://dns.google/dns-query", domains: RU_DIRECT.slice() }
-      ]
-    },
-    inbounds: [{
-      listen: "127.0.0.1",
-      port: 10808,
-      protocol: "socks",
-      settings: {
-        accounts: [{ user: "happ_user" }],
-        auth: "password",
-        udp: true,
-        userLevel: 8
-      },
-      sniffing: { destOverride: ["http", "tls", "quic"], enabled: true },
-      tag: "socks"
-    }],
-    log: {
-      access: "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
-      dnsLog: true,
-      error: "/data/user/0/com.happproxy/files/logs/error/error_log.txt",
-      loglevel: "debug"
-    },
-    outbounds: [
-      {
-        mux: {
-          concurrency: -1,
-          enabled: false,
-          xudpConcurrency: 8,
-          xudpProxyUDP443: ""
-        },
-        protocol: "vless",
-        settings: {
-          address: s.address,
-          encryption: "none",
-          flow: "xtls-rprx-vision",
-          id: s.id,
-          level: 8,
-          port: 443,
-          security: "auto"
-        },
-        streamSettings: {
-          network: "tcp",
-          realitySettings: {
-            fingerprint: "firefox",
-            publicKey: s.pbk,
-            serverName: s.sni,
-            shortId: s.sid,
-            show: false
-          },
-          security: "reality",
-          tcpSettings: { header: { type: "none" } }
-        },
-        tag: "proxy"
-      },
-      { protocol: "freedom", tag: "direct" },
-      { protocol: "blackhole", tag: "block" }
-    ],
-    policy: {
-      levels: { 8: { connIdle: 300, downlinkOnly: 1, handshake: 4, uplinkOnly: 1 } },
-      system: { statsOutboundUplink: true, statsOutboundDownlink: true }
-    },
-    routing: {
-      domainStrategy: "IPIfNonMatch",
-      rules: [
-        { ip: ["1.1.1.1"], outboundTag: "proxy", port: "443" },
-        { ip: ["8.8.8.8"], outboundTag: "direct", port: "443" },
-        { domain: ["geosite:category-ads-all"], outboundTag: "block" },
-        { domain: RU_DIRECT.slice(), outboundTag: "direct" },
-        {
-          ip: [
-            "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16",
-            "169.254.0.0/16", "224.0.0.0/4", "255.255.255.255",
-            "geoip:cn"
-          ],
-          outboundTag: "direct"
-        }
-      ]
-    },
-    stats: {}
-  };
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function splitName(remark){
+  const m = String(remark || '').match(/^(\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*)\s*(.*)$/u);
+  if (m) return { flag: m[1], name: m[2] };
+  return { flag: '🌐', name: remark || 'сервер' };
+}
+
+function render(list){
+  const box = document.getElementById('servers');
+  box.innerHTML = list.map((cfg, i) => {
+    const out = (cfg.outbounds || []).find(o => o.tag === 'proxy') || {};
+    const st = out.settings || {};
+    const { flag, name } = splitName(cfg.remarks);
+    const flow = st.flow ? 'vision' : 'reality';
+    return `<div class="srv">
+      <div class="flag">${esc(flag)}</div>
+      <div class="info">
+        <div class="name">${esc(name)}</div>
+        <div class="meta">${esc(st.address || '')}:${esc(st.port || 443)} · ${flow}</div>
+      </div>
+      <button onclick="copyServer(${i})">JSON</button>
+    </div>`;
+  }).join('');
+
+  document.getElementById('countLine').textContent =
+    list.length + ' серверов · Reality · TCP · обход .ru напрямую';
+  document.getElementById('foot').textContent = 'vless.json · ' + list.length + ' конфигов';
 }
 
 function toast(msg){
@@ -273,13 +154,13 @@ function toast(msg){
   t.textContent = msg;
   t.classList.add('on');
   clearTimeout(window._t);
-  window._t = setTimeout(()=>t.classList.remove('on'), 1600);
+  window._t = setTimeout(() => t.classList.remove('on'), 1600);
 }
 
 function copyText(text){
   const done = () => toast('Скопировано');
   if (navigator.clipboard && window.isSecureContext){
-    navigator.clipboard.writeText(text).then(done).catch(()=>fallback(text, done));
+    navigator.clipboard.writeText(text).then(done).catch(() => fallback(text, done));
   } else {
     fallback(text, done);
   }
@@ -301,8 +182,17 @@ function copyEl(id){
 }
 
 function copyServer(i){
-  copyText(JSON.stringify(buildConfig(SERVERS[i]), null, 2));
+  if (!CONFIGS) return toast('Ещё грузится');
+  copyText(JSON.stringify(CONFIGS[i], null, 2));
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  load().then(render).catch(() => {
+    document.getElementById('servers').innerHTML =
+      '<p style="color:#fca5a5;font-size:14px;margin:0">' +
+      'Не удалось прочитать vless.json. Открой страницу по http, а не из файла.</p>';
+  });
+});
 </script>
 </body>
 </html>
