@@ -1,35 +1,31 @@
-# vless · happ
+# vless · happ (json)
 
-Подписка и конфиги для [Happ](https://happ.su) (Xray-core): VLESS + Reality, 3 сервера.
+Конфиги для [Happ](https://happ.su) (Xray-core): VLESS + Reality, TCP, 3 сервера.
+Только JSON — ссылок `vless://` здесь нет.
 
-## Подписка (браузер)
-
-Открой страницу: **https://kasnysys.github.io/vps.github.io/**
-
-Там кнопки «Копировать» и ссылка для подписки.
-
-## Подписка (Happ)
-
-Вставь в Happ → «Подписки» → «+» → «Ссылка»:
+## Ссылка подписки
 
 ```
-https://kasnysys.github.io/vps.github.io/sub.txt
+https://kasnysys.github.io/vps.github.io/vless.json
 ```
 
-Happ потянет список сам. Альтернатива в base64, если клиент просит такой формат:
+Happ → **Подписки** → «+» → **Ссылка** → вставить → «Обновить».
+
+Если Pages не работает или Happ не ест json по ссылке — тот же файл напрямую с GitHub:
 
 ```
-https://kasnysys.github.io/vps.github.io/sub64.txt
+https://raw.githubusercontent.com/kasnysys/vps.github.io/main/vless.json
 ```
+
+Или скачай `vless.json` и импортируй файлом: Happ → «+» → **Из файла**.
 
 ## Файлы
 
-- `index.html` — страница с кнопками копирования (внутри ещё и «сырые» ссылки, чтобы клиент, читающий тело ответа, тоже их увидел).
-- `sub.txt` — 3 ссылки `vless://` построчно. Это и есть URL подписки.
-- `sub64.txt` — тот же список в base64 (одна строка).
-- `vless.json` — полные конфиги Xray (массив из трёх). Для импорта файлом: Happ → «+» → «Из файла».
+- `vless.json` — массив из трёх полных конфигов Xray (NL, FI, CH). Это и есть подписка.
+- `index.html` — страница со ссылкой подписки и кнопками «JSON» (копируют конфиг одного сервера в буфер).
+- `README.md` — этот файл.
 
-Если Happ ругается на массив в `vless.json` — вырежи нужный блок `{ ... }` в отдельный файл.
+Если Happ ругается на массив — вырежи нужный блок `{ ... }` в отдельный `.json`.
 
 ## Серверы
 
@@ -39,11 +35,11 @@ https://kasnysys.github.io/vps.github.io/sub64.txt
 | 1 | 🇫🇮 Финляндия | fi-b2.golangwikito.cfd | 443 |
 | 2 | 🇨🇭 Швейцария | 85.155.183.228 | 443 |
 
-Все: `tcp`, `security=reality`, `fp=firefox`, `flow=xtls-rprx-vision`.
+Все: `tcp`, `security=reality`, `fp=firefox`, `flow=xtls-rprx-vision`, socks-инбаунд `127.0.0.1:10808`.
 
 ## Обход
 
-В `vless.json` (routing) российские домены и IP идут **напрямую**, мимо прокси:
+В `routing` российские домены и IP идут **напрямую**, мимо прокси:
 
 - `domain:ru`, `domain:su`, `domain:рф`, `domain:xn--p1ai`
 - `geosite:ru`, `geoip:ru`
@@ -52,4 +48,4 @@ https://kasnysys.github.io/vps.github.io/sub64.txt
 
 Остальное — через VPN. Реклама (`geosite:category-ads-all`) — в блок.
 
-> Ссылки в `sub.txt`/`sub64.txt` содержат ключи. Кто их получит — сможет подключаться к серверам. Держи репозиторий приватным, если серверы боевые.
+> В конфигах лежат реальные `id` и `publicKey`. Кто увидит файл — сможет подключиться к серверам. Держи репозиторий приватным, если серверы боевые.
