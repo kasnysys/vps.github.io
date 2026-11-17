@@ -8,7 +8,10 @@
 
 import json
 import re
+import socket
+import ssl
 import time
+from concurrent.futures import ThreadPoolExecutor
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -18,8 +21,10 @@ SOURCES = [
     "https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector/main/sub/mix",
 ]
 
-PER_COUNTRY = 20
-MIN_PER_COUNTRY = 20
+PER_COUNTRY = 20      # сколько серверов брать из страны
+MIN_PER_COUNTRY = 20  # минимум живых, иначе страна пропускается
+PROBE_TIMEOUT = 5     # секунд на проверку одного сервера
+PROBE_WORKERS = 64    # параллельных проверок
 OUT = "vless.json"
 
 COUNTRY_NAMES = {
@@ -132,6 +137,52 @@ def collect():
                 continue
     print("unique reality/tcp:", len(servers))
     return list(servers.values())
+
+
+def probe_one(s):
+    """Возвращает (жив, tls_ok, мс). Мс — время TCP-коннекта."""
+    host, port, sni = s["host"], s["port"], s["sni"]
+    if not port:
+        return False, False, None
+    t0 = time.time()
+    try:
+        with socket.create_connection((host, port), timeout=PROBE_TIMEOUT) as sock:
+            ms = int((time.time() - t0) * 1000)
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            try:
+                with ctx.wrap_socket(sock, server_hostname=sni):
+                    return True, True, ms
+            except Exception:
+                return True, False, ms
+    except Exception:
+        return False, False, None
+
+
+def probe(servers):
+    """Пингует каждый сервер: TCP-коннект + TLS-рукопожатие с его SNI."""
+    # в каждой стране дальше останутся самые быстрые
+    alive = []
+    total = len(servers)
+    done = 0
+    with ThreadPoolExecutor(max_workers=PROBE_WORKERS) as pool:
+        futures = {pool.submit(probe_one, s): s for s in servers}
+        for fut in futures:
+            s = futures[fut]
+            try:
+                tcp_ok, tls_ok, ms = fut.result()
+            except Exception:
+                tcp_ok, tls_ok, ms = False, False, None
+            s["tls"] = tls_ok
+            s["ms"] = ms if ms is not None else 99999
+            if tcp_ok:
+                alive.append(s)
+            done += 1
+            if done % 100 == 0 or done == total:
+                print("ping: %d/%d, живых %d" % (done, total, len(alive)))
+    print("alive after ping: %d из %d" % (len(alive), total))
+    return alive
 
 
 def geo(ips):
@@ -254,6 +305,7 @@ def build(entry, idx):
 
 def main():
     servers = collect()
+    servers = probe(servers)
     ips = sorted({s["host"] for s in servers if IPV4.match(s["host"])})
     countries = geo(ips)
 
@@ -264,10 +316,20 @@ def main():
             continue
         by_country.setdefault(cc, []).append(s)
 
+    # внутри страны — по возрастанию пинга, самые быстрые первыми
+    for arr in by_country.values():
+        arr.sort(key=lambda x: (x["ms"], not x.get("tls"), x["host"]))
+
+    enough = [cc for cc, arr in by_country.items() if len(arr) >= MIN_PER_COUNTRY]
+    threshold = MIN_PER_COUNTRY
+    if len(enough) < 6:
+        threshold = 3
+        print("мало стран с %d серверами, снижаю порог до %d" % (MIN_PER_COUNTRY, threshold))
+
     picked = []
     for cc in sorted(by_country, key=lambda c: COUNTRY_NAMES.get(c, c)):
         arr = by_country[cc]
-        if len(arr) < MIN_PER_COUNTRY:
+        if len(arr) < threshold:
             continue
         for i, s in enumerate(arr[:PER_COUNTRY], start=1):
             picked.append({
