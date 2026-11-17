@@ -30,7 +30,6 @@
             "domain:su",
             "domain:рф",
             "domain:xn--p1ai",
-            "geosite:ru",
             "geosite:cn",
             "geosite:private"
           ]
@@ -163,7 +162,6 @@
             "domain:su",
             "domain:рф",
             "domain:xn--p1ai",
-            "geosite:ru",
             "geosite:cn",
             "geosite:private"
           ],
@@ -177,7 +175,6 @@
             "169.254.0.0/16",
             "224.0.0.0/4",
             "255.255.255.255",
-            "geoip:ru",
             "geoip:cn"
           ],
           "outboundTag": "direct"
@@ -217,7 +214,6 @@
             "domain:su",
             "domain:рф",
             "domain:xn--p1ai",
-            "geosite:ru",
             "geosite:cn",
             "geosite:private"
           ]
@@ -350,7 +346,6 @@
             "domain:su",
             "domain:рф",
             "domain:xn--p1ai",
-            "geosite:ru",
             "geosite:cn",
             "geosite:private"
           ],
@@ -364,7 +359,6 @@
             "169.254.0.0/16",
             "224.0.0.0/4",
             "255.255.255.255",
-            "geoip:ru",
             "geoip:cn"
           ],
           "outboundTag": "direct"
@@ -404,7 +398,6 @@
             "domain:su",
             "domain:рф",
             "domain:xn--p1ai",
-            "geosite:ru",
             "geosite:cn",
             "geosite:private"
           ]
@@ -533,7 +526,6 @@
             "domain:su",
             "domain:рф",
             "domain:xn--p1ai",
-            "geosite:ru",
             "geosite:cn",
             "geosite:private"
           ],
@@ -547,7 +539,6 @@
             "169.254.0.0/16",
             "224.0.0.0/4",
             "255.255.255.255",
-            "geoip:ru",
             "geoip:cn"
           ],
           "outboundTag": "direct"

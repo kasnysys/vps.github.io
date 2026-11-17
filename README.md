@@ -42,10 +42,13 @@ https://raw.githubusercontent.com/kasnysys/vps.github.io/main/vless.json
 В `routing` российские домены и IP идут **напрямую**, мимо прокси:
 
 - `domain:ru`, `domain:su`, `domain:рф`, `domain:xn--p1ai`
-- `geosite:ru`, `geoip:ru`
 - `domain:gov.ru`, `domain:bank.com`
 - локальные сети `10/8`, `172.16/12`, `192.168/16`, `169.254/16`
 
 Остальное — через VPN. Реклама (`geosite:category-ads-all`) — в блок.
+
+> Категорий `geosite:ru` / `geoip:ru` в конфигах нет специально: в geosite.dat,
+> который идёт с Happ, секции `RU` не бывает, и ядро падает с ошибкой
+> «отсутствует секция RU». Обход по России сделан обычными доменами `.ru`, `.su`, `.рф`.
 
 > В конфигах лежат реальные `id` и `publicKey`. Кто увидит файл — сможет подключиться к серверам. Держи репозиторий приватным, если серверы боевые.
