@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 """Собирает vless.json из публичных коллекторов конфигов.
 
-Тянет списки vless://, оставляет только reality + tcp, определяет страну по IP,
-берёт по PER_COUNTRY серверов на страну и пишет полные конфиги Xray.
-Запускается по крону в GitHub Actions.
+Тянет списки vless://, оставляет reality + tcp, определяет страну по IP и
+собирает ОДИН профиль с автовыбором: все серверы лежат отдельными outbound'ами,
+а Xray через observatory (leastPing) сам пингует их с телефона пользователя и
+держит самый быстрый. Плюс отдельные профили по странам.
 """
 
 import json
 import re
-import socket
-import ssl
 import time
-from concurrent.futures import ThreadPoolExecutor
-import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -21,10 +18,11 @@ SOURCES = [
     "https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector/main/sub/mix",
 ]
 
-PER_COUNTRY = 20      # сколько серверов брать из страны
-MIN_PER_COUNTRY = 20  # минимум живых, иначе страна пропускается
-PROBE_TIMEOUT = 5     # секунд на проверку одного сервера
-PROBE_WORKERS = 64    # параллельных проверок
+PER_COUNTRY = 20       # серверов из каждой страны
+MIN_PER_COUNTRY = 3    # меньше — страну не берём
+PROBE_URL = "https://www.google.com/generate_204"
+PROBE_INTERVAL = "1m"
+PER_COUNTRY_PROFILES = True  # делать отдельные профили на каждую страну
 OUT = "vless.json"
 
 COUNTRY_NAMES = {
@@ -102,12 +100,7 @@ def post_json(url, payload, timeout=30):
 def collect():
     servers = {}
     for url in SOURCES:
-        try:
-            body = get(url)
-        except Exception as e:
-            print("source failed:", url, e)
-            continue
-        body = body.replace("&amp;", "&")
+        body = get(url).replace("&amp;", "&")
         for raw in body.splitlines():
             line = raw.strip()
             if not line.startswith("vless://"):
@@ -139,52 +132,6 @@ def collect():
     return list(servers.values())
 
 
-def probe_one(s):
-    """Возвращает (жив, tls_ok, мс). Мс — время TCP-коннекта."""
-    host, port, sni = s["host"], s["port"], s["sni"]
-    if not port:
-        return False, False, None
-    t0 = time.time()
-    try:
-        with socket.create_connection((host, port), timeout=PROBE_TIMEOUT) as sock:
-            ms = int((time.time() - t0) * 1000)
-            ctx = ssl.create_default_context()
-            ctx.check_hostname = False
-            ctx.verify_mode = ssl.CERT_NONE
-            try:
-                with ctx.wrap_socket(sock, server_hostname=sni):
-                    return True, True, ms
-            except Exception:
-                return True, False, ms
-    except Exception:
-        return False, False, None
-
-
-def probe(servers):
-    """Пингует каждый сервер: TCP-коннект + TLS-рукопожатие с его SNI."""
-    # в каждой стране дальше останутся самые быстрые
-    alive = []
-    total = len(servers)
-    done = 0
-    with ThreadPoolExecutor(max_workers=PROBE_WORKERS) as pool:
-        futures = {pool.submit(probe_one, s): s for s in servers}
-        for fut in futures:
-            s = futures[fut]
-            try:
-                tcp_ok, tls_ok, ms = fut.result()
-            except Exception:
-                tcp_ok, tls_ok, ms = False, False, None
-            s["tls"] = tls_ok
-            s["ms"] = ms if ms is not None else 99999
-            if tcp_ok:
-                alive.append(s)
-            done += 1
-            if done % 100 == 0 or done == total:
-                print("ping: %d/%d, живых %d" % (done, total, len(alive)))
-    print("alive after ping: %d из %d" % (len(alive), total))
-    return alive
-
-
 def geo(ips):
     found = {}
     chunk = 100
@@ -195,12 +142,12 @@ def geo(ips):
         for attempt in range(3):
             try:
                 res = post_json("http://ip-api.com/batch", payload)
-                if isinstance(res, dict):
+                if not isinstance(res, list):
                     res = None
-                    raise RuntimeError("rate limited: %s" % res)
+                    raise RuntimeError("unexpected answer")
                 break
             except Exception as e:
-                print("geo batch retry %d/3: %s" % (attempt + 1, e))
+                print("geo retry %d/3: %s" % (attempt + 1, e))
                 time.sleep(8)
         if not res:
             continue
@@ -219,19 +166,46 @@ def flag(cc):
     return "".join(chr(0x1F1E6 + ord(c) - 65) for c in cc)
 
 
-def build(entry, idx):
-    s = entry["server"]
+def outbound(tag, s):
     reality = {
         "fingerprint": s["fp"],
         "publicKey": s["pbk"],
         "serverName": s["sni"],
+        "show": False,
     }
     if s["sid"]:
         reality["shortId"] = s["sid"]
-    reality["show"] = False
 
     return {
-        "remarks": entry["name"],
+        "tag": tag,
+        "protocol": "vless",
+        "settings": {
+            "address": s["host"],
+            "encryption": "none",
+            "flow": s["flow"],
+            "id": s["id"],
+            "level": 8,
+            "port": s["port"],
+            "security": "auto",
+        },
+        "streamSettings": {
+            "network": "tcp",
+            "realitySettings": reality,
+            "security": "reality",
+            "tcpSettings": {"header": {"type": "none"}},
+        },
+    }
+
+
+def build_config(remarks, servers, idx):
+    outs = []
+    for i, s in enumerate(servers, start=1):
+        outs.append(outbound("s-%d" % i, s))
+    outs.append({"tag": "direct", "protocol": "freedom"})
+    outs.append({"tag": "block", "protocol": "blackhole"})
+
+    return {
+        "remarks": remarks,
         "api": {"listen": "[::1]:10085", "services": ["StatsService"], "tag": "api"},
         "dns": {
             "hosts": {"domain:googleapis.cn": "googleapis.com"},
@@ -261,42 +235,29 @@ def build(entry, idx):
             "error": "/data/user/0/com.happproxy/files/logs/error/error_log.txt",
             "loglevel": "warning",
         },
-        "outbounds": [
-            {
-                "mux": {"concurrency": -1, "enabled": False, "xudpConcurrency": 8, "xudpProxyUDP443": ""},
-                "protocol": "vless",
-                "settings": {
-                    "address": s["host"],
-                    "encryption": "none",
-                    "flow": s["flow"],
-                    "id": s["id"],
-                    "level": 8,
-                    "port": s["port"],
-                    "security": "auto",
-                },
-                "streamSettings": {
-                    "network": "tcp",
-                    "realitySettings": reality,
-                    "security": "reality",
-                    "tcpSettings": {"header": {"type": "none"}},
-                },
-                "tag": "proxy",
-            },
-            {"protocol": "freedom", "tag": "direct"},
-            {"protocol": "blackhole", "tag": "block"},
-        ],
+        "outbounds": outs,
+        "observatory": {
+            "subjectSelector": ["s-"],
+            "probeUrl": PROBE_URL,
+            "probeInterval": PROBE_INTERVAL,
+            "enableConcurrency": True,
+        },
         "policy": {
             "levels": {"8": {"connIdle": 300, "downlinkOnly": 1, "handshake": 4, "uplinkOnly": 1}},
             "system": {"statsOutboundUplink": True, "statsOutboundDownlink": True},
         },
         "routing": {
             "domainStrategy": "IPIfNonMatch",
+            "balancers": [{
+                "tag": "auto",
+                "selector": ["s-"],
+                "strategy": {"type": "leastPing"},
+            }],
             "rules": [
-                {"ip": ["1.1.1.1"], "outboundTag": "proxy", "port": "53"},
-                {"ip": ["8.8.8.8"], "outboundTag": "direct", "port": "53"},
                 {"domain": ["geosite:category-ads-all"], "outboundTag": "block"},
                 {"domain": list(RU_DOM), "outboundTag": "direct"},
                 {"ip": list(LOCAL_IP), "outboundTag": "direct"},
+                {"network": "tcp,udp", "balancerTag": "auto"},
             ],
         },
         "stats": {},
@@ -305,7 +266,6 @@ def build(entry, idx):
 
 def main():
     servers = collect()
-    servers = probe(servers)
     ips = sorted({s["host"] for s in servers if IPV4.match(s["host"])})
     countries = geo(ips)
 
@@ -316,42 +276,31 @@ def main():
             continue
         by_country.setdefault(cc, []).append(s)
 
-    # внутри страны — по возрастанию пинга, самые быстрые первыми
-    for arr in by_country.values():
-        arr.sort(key=lambda x: (x["ms"], not x.get("tls"), x["host"]))
+    countries = {cc: arr for cc, arr in by_country.items() if len(arr) >= MIN_PER_COUNTRY}
+    if not countries:
+        raise SystemExit("no country with enough servers, keeping old file")
 
-    enough = [cc for cc, arr in by_country.items() if len(arr) >= MIN_PER_COUNTRY]
-    threshold = MIN_PER_COUNTRY
-    if len(enough) < 6:
-        threshold = 3
-        print("мало стран с %d серверами, снижаю порог до %d" % (MIN_PER_COUNTRY, threshold))
+    configs = []
 
-    picked = []
-    for cc in sorted(by_country, key=lambda c: COUNTRY_NAMES.get(c, c)):
-        arr = by_country[cc]
-        if len(arr) < threshold:
-            continue
-        for i, s in enumerate(arr[:PER_COUNTRY], start=1):
-            picked.append({
-                "cc": cc,
-                "name": "%s %s #%d" % (flag(cc), COUNTRY_NAMES.get(cc, cc), i),
-                "server": s,
-            })
+    # профиль по умолчанию: все страны, автовыбор по пингу
+    all_servers = []
+    for cc in sorted(countries, key=lambda c: COUNTRY_NAMES.get(c, c)):
+        all_servers.extend(countries[cc][:PER_COUNTRY])
+    configs.append(build_config("🌍 Авто — лучший сервер", all_servers, 0))
 
-    configs = [build(e, i) for i, e in enumerate(picked)]
-    if len(configs) < 20:
-        raise SystemExit("too few servers (%d), keeping old file" % len(configs))
+    # отдельные профили по странам
+    if PER_COUNTRY_PROFILES:
+        for n, cc in enumerate(sorted(countries, key=lambda c: COUNTRY_NAMES.get(c, c)), start=1):
+            name = "%s %s — авто" % (flag(cc), COUNTRY_NAMES.get(cc, cc))
+            configs.append(build_config(name, countries[cc][:PER_COUNTRY], n))
 
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(configs, f, ensure_ascii=False, indent=2)
         f.write("\n")
 
-    summary = {}
-    for c in configs:
-        cc = c["remarks"].split(" ")[0]
-        summary[cc] = summary.get(cc, 0) + 1
-    print("written:", len(configs), "configs")
-    print("countries:", {COUNTRY_NAMES.get(k, k): v for k, v in sorted(summary.items())})
+    print("profiles: %d, servers in auto: %d" % (len(configs), len(all_servers)))
+    for c in configs[1:]:
+        print("  ", c["remarks"], "-", len(c["outbounds"]) - 2, "серверов")
 
 
 if __name__ == "__main__":

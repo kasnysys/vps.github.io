@@ -104,10 +104,12 @@
       <li>Скопируй <b>ссылку подписки</b> выше.</li>
       <li>Happ → <b>Подписки</b> → «+» → <b>Ссылка</b>.</li>
       <li>Вставить, сохранить, «Обновить».</li>
-      <li>Появятся все серверы — выбирай любой.</li>
+      <li>Включи первый профиль — <b>🌍 Авто — лучший сервер</b>.</li>
+      <li>Xray сам пингует все серверы с твоего телефона и ходит через самый быстрый.</li>
     </ol>
     <p style="color:var(--dim);font-size:13px;margin:14px 0 0">
-      Нужен один сервер? Жми <b>JSON</b> у него и в Happ: «+» → <b>Импорт из буфера обмена</b>.
+      Хочешь конкретную страну? Есть профили <b>🇳🇱 Netherlands — авто</b> и другие — автовыбор внутри страны.
+      Нужен один сервер? Жми <b>JSON</b> у профиля и в Happ: «+» → <b>Импорт из буфера обмена</b>.
     </p>
   </div>
 
@@ -156,22 +158,24 @@ function splitName(remark){
 function render(list){
   const box = document.getElementById('servers');
   box.innerHTML = list.map((cfg, i) => {
-    const out = (cfg.outbounds || []).find(o => o.tag === 'proxy') || {};
-    const st = out.settings || {};
+    const outs = cfg.outbounds || [];
+    const first = outs.find(o => /^s-/.test(o.tag)) || {};
+    const st = first.settings || {};
+    const n = outs.filter(o => /^s-/.test(o.tag)).length;
     const { flag, name } = splitName(cfg.remarks);
-    const flow = st.flow ? 'vision' : 'reality';
+    const auto = /авто/i.test(name) || /🌍/.test(flag);
     return `<div class="srv">
       <div class="flag">${esc(flag)}</div>
       <div class="info">
         <div class="name">${esc(name)}</div>
-        <div class="meta">${esc(st.address || '')}:${esc(st.port || 443)} · ${flow}</div>
+        <div class="meta">${n} серверов · leastPing${auto ? ' · автовыбор' : ''}${st.address ? ' · напр. ' + esc(st.address) : ''}</div>
       </div>
       <button onclick="copyServer(${i})">JSON</button>
     </div>`;
   }).join('');
 
   document.getElementById('countLine').textContent =
-    list.length + ' серверов · Reality · TCP · обход .ru напрямую';
+    list.length + ' профилей · автовыбор по пингу с телефона · Reality · TCP';
   document.getElementById('foot').textContent = 'vless.json · ' + list.length + ' конфигов';
   document.getElementById('subUrl').textContent = subUrl();
   document.getElementById('dlBtn').href = subUrl();
