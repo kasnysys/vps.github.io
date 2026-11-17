@@ -187,6 +187,9 @@ function copyServer(i){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // ссылка подписки — от того хоста, где открыта страница
+  document.getElementById('subUrl').textContent = new URL('vless.json', location.href).href;
+
   load().then(render).catch(() => {
     document.getElementById('servers').innerHTML =
       '<p style="color:#fca5a5;font-size:14px;margin:0">' +
