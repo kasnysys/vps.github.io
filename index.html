@@ -69,7 +69,19 @@
   <h1>vless json</h1>
   <p class="sub" id="countLine">подписка · xray</p>
 
-  <div class="card">
+  <div class="card" id="keyCard" style="display:none">
+    <div class="label">Ключ доступа</div>
+    <div class="url">
+      <input id="keyInput" type="password" placeholder="ключ" autocomplete="off"
+        style="flex:1;min-width:0;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:11px 12px;color:var(--txt);font:inherit;font-size:14px">
+      <button class="pri" onclick="saveKey()">Войти</button>
+    </div>
+    <p style="color:var(--dim);font-size:13px;margin:12px 0 0">
+      Ключ хранится только в этом браузере, никуда не отправляется — им подписывается запрос к серверу.
+    </p>
+  </div>
+
+  <div class="card" id="subCard" style="display:none">
     <div class="label">Ссылка подписки</div>
     <div class="url">
       <code id="subUrl">https://kasnysys.github.io/vps.github.io/vless.json</code>
@@ -78,7 +90,7 @@
     <p style="color:var(--dim);font-size:13px;margin:12px 0 0">
       Happ → <b>Подписки</b> → «+» → «Ссылка» → вставить → «Обновить».
     </p>
-    <a href="vless.json" download><button class="wide">Скачать vless.json</button></a>
+    <a id="dlBtn" href="vless.json" download><button class="wide">Скачать vless.json</button></a>
   </div>
 
   <div class="card">
@@ -109,11 +121,25 @@
 <div class="toast" id="toast">Скопировано</div>
 
 <script>
+const WORKER_URL = ""; // сюда адрес воркера, когда задеплоишь
 let CONFIGS = null;
+let KEY = '';
+
+function subUrl(){
+  if (WORKER_URL) return WORKER_URL + '/?key=' + encodeURIComponent(KEY);
+  return new URL('vless.json', location.href).href;
+}
 
 function load(){
-  return fetch('vless.json', {cache:'no-store'})
-    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+  const url = subUrl();
+  const opts = {cache:'no-store'};
+  if (KEY && WORKER_URL) opts.headers = {'x-key': KEY};
+  return fetch(url, opts)
+    .then(r => {
+      if (r.status === 403) throw new Error('key');
+      if (!r.ok) throw new Error('http ' + r.status);
+      return r.json();
+    })
     .then(d => { CONFIGS = d; return d; });
 }
 
@@ -147,6 +173,8 @@ function render(list){
   document.getElementById('countLine').textContent =
     list.length + ' серверов · Reality · TCP · обход .ru напрямую';
   document.getElementById('foot').textContent = 'vless.json · ' + list.length + ' конфигов';
+  document.getElementById('subUrl').textContent = subUrl();
+  document.getElementById('dlBtn').href = subUrl();
 }
 
 function toast(msg){
@@ -186,15 +214,50 @@ function copyServer(i){
   copyText(JSON.stringify(CONFIGS[i], null, 2));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  // ссылка подписки — от того хоста, где открыта страница
-  document.getElementById('subUrl').textContent = new URL('vless.json', location.href).href;
+function saveKey(){
+  const v = document.getElementById('keyInput').value.trim();
+  if (!v) return toast('Введи ключ');
+  KEY = v;
+  try { localStorage.setItem('happ_key', v); } catch(e){}
+  boot();
+}
 
-  load().then(render).catch(() => {
-    document.getElementById('servers').innerHTML =
-      '<p style="color:#fca5a5;font-size:14px;margin:0">' +
-      'Не удалось прочитать vless.json. Открой страницу по http, а не из файла.</p>';
+function fail(msg){
+  document.getElementById('servers').innerHTML =
+    '<p style="color:#fca5a5;font-size:14px;margin:0">' + esc(msg) + '</p>';
+}
+
+function boot(){
+  const keyCard = document.getElementById('keyCard');
+  const subCard = document.getElementById('subCard');
+
+  if (WORKER_URL && !KEY){
+    keyCard.style.display = '';
+    subCard.style.display = 'none';
+    fail('Введи ключ доступа, чтобы увидеть серверы.');
+    return;
+  }
+
+  keyCard.style.display = 'none';
+  subCard.style.display = '';
+  document.getElementById('subUrl').textContent = subUrl();
+
+  load().then(render).catch(err => {
+    if (String(err.message) === 'key'){
+      try { localStorage.removeItem('happ_key'); } catch(e){}
+      KEY = '';
+      keyCard.style.display = '';
+      subCard.style.display = 'none';
+      fail('Ключ не подошёл.');
+      return;
+    }
+    fail('Не удалось прочитать конфиги. Открой страницу по http, а не из файла.');
   });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  try { KEY = localStorage.getItem('happ_key') || ''; } catch(e){ KEY = ''; }
+  boot();
 });
 </script>
 </body>
