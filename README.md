@@ -17,6 +17,15 @@ Happ → **Подписки** → «+» → **Ссылка** → вставит�
 https://kasnysys.github.io/vps.github.io/
 ```
 
+**Pages пока не включён в репозитории** (отдаёт 404). Пока не включишь, страница
+работает через raw.githack:
+
+```
+https://raw.githack.com/kasnysys/vps.github.io/main/index.html
+```
+
+Включить Pages: Settings → Pages → Source: `Deploy from a branch` → `main` / `/ (root)` → Save.
+
 Если Pages не поднялся, работает напрямую с GitHub:
 
 ```
