@@ -5587,35 +5587,6 @@
         "tag": "s-192",
         "protocol": "vless",
         "settings": {
-          "address": "147.45.47.101",
-          "encryption": "none",
-          "flow": "xtls-rprx-vision",
-          "id": "27f26dee-9cf1-4cca-93f8-9ac23d311408",
-          "level": 8,
-          "port": 8443,
-          "security": "auto"
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "fingerprint": "chrome",
-            "publicKey": "SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc",
-            "serverName": "apple.com",
-            "show": false,
-            "shortId": "6ba85179e30d4fc2"
-          },
-          "security": "reality",
-          "tcpSettings": {
-            "header": {
-              "type": "none"
-            }
-          }
-        }
-      },
-      {
-        "tag": "s-193",
-        "protocol": "vless",
-        "settings": {
           "address": "31.76.230.158",
           "encryption": "none",
           "flow": "xtls-rprx-vision",
@@ -5642,7 +5613,7 @@
         }
       },
       {
-        "tag": "s-194",
+        "tag": "s-193",
         "protocol": "vless",
         "settings": {
           "address": "201.24.114.60",
@@ -5671,7 +5642,7 @@
         }
       },
       {
-        "tag": "s-195",
+        "tag": "s-194",
         "protocol": "vless",
         "settings": {
           "address": "176.98.178.163",
@@ -5700,7 +5671,7 @@
         }
       },
       {
-        "tag": "s-196",
+        "tag": "s-195",
         "protocol": "vless",
         "settings": {
           "address": "89.169.2.136",
@@ -5729,7 +5700,7 @@
         }
       },
       {
-        "tag": "s-197",
+        "tag": "s-196",
         "protocol": "vless",
         "settings": {
           "address": "201.51.11.65",
@@ -5757,7 +5728,7 @@
         }
       },
       {
-        "tag": "s-198",
+        "tag": "s-197",
         "protocol": "vless",
         "settings": {
           "address": "185.154.193.137",
@@ -5786,7 +5757,7 @@
         }
       },
       {
-        "tag": "s-199",
+        "tag": "s-198",
         "protocol": "vless",
         "settings": {
           "address": "188.225.45.152",
@@ -5815,7 +5786,7 @@
         }
       },
       {
-        "tag": "s-200",
+        "tag": "s-199",
         "protocol": "vless",
         "settings": {
           "address": "45.152.113.249",
@@ -5834,6 +5805,35 @@
             "serverName": "static.selectel.ru",
             "show": false,
             "shortId": "0d716963661ef982"
+          },
+          "security": "reality",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        }
+      },
+      {
+        "tag": "s-200",
+        "protocol": "vless",
+        "settings": {
+          "address": "147.45.47.101",
+          "encryption": "none",
+          "flow": "xtls-rprx-vision",
+          "id": "27f26dee-9cf1-4cca-93f8-9ac23d311408",
+          "level": 8,
+          "port": 8443,
+          "security": "auto"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "realitySettings": {
+            "fingerprint": "chrome",
+            "publicKey": "SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc",
+            "serverName": "apple.com",
+            "show": false,
+            "shortId": "6ba85179e30d4fc2"
           },
           "security": "reality",
           "tcpSettings": {
@@ -17653,35 +17653,6 @@
         "tag": "s-1",
         "protocol": "vless",
         "settings": {
-          "address": "147.45.47.101",
-          "encryption": "none",
-          "flow": "xtls-rprx-vision",
-          "id": "27f26dee-9cf1-4cca-93f8-9ac23d311408",
-          "level": 8,
-          "port": 8443,
-          "security": "auto"
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "fingerprint": "chrome",
-            "publicKey": "SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc",
-            "serverName": "apple.com",
-            "show": false,
-            "shortId": "6ba85179e30d4fc2"
-          },
-          "security": "reality",
-          "tcpSettings": {
-            "header": {
-              "type": "none"
-            }
-          }
-        }
-      },
-      {
-        "tag": "s-2",
-        "protocol": "vless",
-        "settings": {
           "address": "31.76.230.158",
           "encryption": "none",
           "flow": "xtls-rprx-vision",
@@ -17708,7 +17679,7 @@
         }
       },
       {
-        "tag": "s-3",
+        "tag": "s-2",
         "protocol": "vless",
         "settings": {
           "address": "201.24.114.60",
@@ -17737,7 +17708,7 @@
         }
       },
       {
-        "tag": "s-4",
+        "tag": "s-3",
         "protocol": "vless",
         "settings": {
           "address": "176.98.178.163",
@@ -17766,7 +17737,7 @@
         }
       },
       {
-        "tag": "s-5",
+        "tag": "s-4",
         "protocol": "vless",
         "settings": {
           "address": "89.169.2.136",
@@ -17795,7 +17766,7 @@
         }
       },
       {
-        "tag": "s-6",
+        "tag": "s-5",
         "protocol": "vless",
         "settings": {
           "address": "201.51.11.65",
@@ -17823,7 +17794,7 @@
         }
       },
       {
-        "tag": "s-7",
+        "tag": "s-6",
         "protocol": "vless",
         "settings": {
           "address": "185.154.193.137",
@@ -17852,7 +17823,7 @@
         }
       },
       {
-        "tag": "s-8",
+        "tag": "s-7",
         "protocol": "vless",
         "settings": {
           "address": "188.225.45.152",
@@ -17881,7 +17852,7 @@
         }
       },
       {
-        "tag": "s-9",
+        "tag": "s-8",
         "protocol": "vless",
         "settings": {
           "address": "45.152.113.249",
@@ -17900,6 +17871,35 @@
             "serverName": "static.selectel.ru",
             "show": false,
             "shortId": "0d716963661ef982"
+          },
+          "security": "reality",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        }
+      },
+      {
+        "tag": "s-9",
+        "protocol": "vless",
+        "settings": {
+          "address": "147.45.47.101",
+          "encryption": "none",
+          "flow": "xtls-rprx-vision",
+          "id": "27f26dee-9cf1-4cca-93f8-9ac23d311408",
+          "level": 8,
+          "port": 8443,
+          "security": "auto"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "realitySettings": {
+            "fingerprint": "chrome",
+            "publicKey": "SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc",
+            "serverName": "apple.com",
+            "show": false,
+            "shortId": "6ba85179e30d4fc2"
           },
           "security": "reality",
           "tcpSettings": {
