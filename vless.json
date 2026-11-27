@@ -8157,35 +8157,6 @@
         "tag": "s-281",
         "protocol": "vless",
         "settings": {
-          "address": "153.52.143.118",
-          "encryption": "none",
-          "flow": "xtls-rprx-vision",
-          "id": "ccb8ff48-3934-4250-b4ec-bb76b95d154f",
-          "level": 8,
-          "port": 443,
-          "security": "auto"
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "fingerprint": "firefox",
-            "publicKey": "NaCZ-sS4poEbFwKmD7ePAVyc5OhHxsD9nkAStjXkoWs",
-            "serverName": "de2.fox-lisa.ru",
-            "show": false,
-            "shortId": "027af64166562b09"
-          },
-          "security": "reality",
-          "tcpSettings": {
-            "header": {
-              "type": "none"
-            }
-          }
-        }
-      },
-      {
-        "tag": "s-282",
-        "protocol": "vless",
-        "settings": {
           "address": "45.144.112.55",
           "encryption": "none",
           "flow": "xtls-rprx-vision",
@@ -8212,7 +8183,7 @@
         }
       },
       {
-        "tag": "s-283",
+        "tag": "s-282",
         "protocol": "vless",
         "settings": {
           "address": "167.17.69.171",
@@ -8241,7 +8212,7 @@
         }
       },
       {
-        "tag": "s-284",
+        "tag": "s-283",
         "protocol": "vless",
         "settings": {
           "address": "47.253.226.114",
@@ -8269,7 +8240,7 @@
         }
       },
       {
-        "tag": "s-285",
+        "tag": "s-284",
         "protocol": "vless",
         "settings": {
           "address": "31.57.185.32",
@@ -8298,7 +8269,7 @@
         }
       },
       {
-        "tag": "s-286",
+        "tag": "s-285",
         "protocol": "vless",
         "settings": {
           "address": "176.126.122.168",
@@ -8326,7 +8297,7 @@
         }
       },
       {
-        "tag": "s-287",
+        "tag": "s-286",
         "protocol": "vless",
         "settings": {
           "address": "45.91.138.179",
@@ -8355,7 +8326,7 @@
         }
       },
       {
-        "tag": "s-288",
+        "tag": "s-287",
         "protocol": "vless",
         "settings": {
           "address": "170.168.32.125",
@@ -8384,7 +8355,7 @@
         }
       },
       {
-        "tag": "s-289",
+        "tag": "s-288",
         "protocol": "vless",
         "settings": {
           "address": "179.255.148.66",
@@ -8413,7 +8384,7 @@
         }
       },
       {
-        "tag": "s-290",
+        "tag": "s-289",
         "protocol": "vless",
         "settings": {
           "address": "47.251.25.74",
@@ -8441,7 +8412,7 @@
         }
       },
       {
-        "tag": "s-291",
+        "tag": "s-290",
         "protocol": "vless",
         "settings": {
           "address": "45.198.96.210",
@@ -8470,7 +8441,7 @@
         }
       },
       {
-        "tag": "s-292",
+        "tag": "s-291",
         "protocol": "vless",
         "settings": {
           "address": "195.211.98.43",
@@ -8499,7 +8470,7 @@
         }
       },
       {
-        "tag": "s-293",
+        "tag": "s-292",
         "protocol": "vless",
         "settings": {
           "address": "38.244.5.231",
@@ -8528,7 +8499,7 @@
         }
       },
       {
-        "tag": "s-294",
+        "tag": "s-293",
         "protocol": "vless",
         "settings": {
           "address": "48.102.167.254",
@@ -8557,7 +8528,7 @@
         }
       },
       {
-        "tag": "s-295",
+        "tag": "s-294",
         "protocol": "vless",
         "settings": {
           "address": "48.102.170.205",
@@ -8586,7 +8557,7 @@
         }
       },
       {
-        "tag": "s-296",
+        "tag": "s-295",
         "protocol": "vless",
         "settings": {
           "address": "48.102.204.67",
@@ -8615,7 +8586,7 @@
         }
       },
       {
-        "tag": "s-297",
+        "tag": "s-296",
         "protocol": "vless",
         "settings": {
           "address": "31.57.185.176",
@@ -8644,7 +8615,7 @@
         }
       },
       {
-        "tag": "s-298",
+        "tag": "s-297",
         "protocol": "vless",
         "settings": {
           "address": "5.78.28.48",
@@ -8673,7 +8644,7 @@
         }
       },
       {
-        "tag": "s-299",
+        "tag": "s-298",
         "protocol": "vless",
         "settings": {
           "address": "18.225.235.105",
@@ -8702,10 +8673,39 @@
         }
       },
       {
-        "tag": "s-300",
+        "tag": "s-299",
         "protocol": "vless",
         "settings": {
           "address": "3.141.105.203",
+          "encryption": "none",
+          "flow": "xtls-rprx-vision",
+          "id": "2e0697c0-5d99-4502-a001-bb90e6476d2a",
+          "level": 8,
+          "port": 443,
+          "security": "auto"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "realitySettings": {
+            "fingerprint": "chrome",
+            "publicKey": "uKTuTKW9v75dRfEvCTO-VwYKi9qB_qyhNdyOpq4ceEo",
+            "serverName": "dl.google.com",
+            "show": false,
+            "shortId": "cd80d90bee24205f"
+          },
+          "security": "reality",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        }
+      },
+      {
+        "tag": "s-300",
+        "protocol": "vless",
+        "settings": {
+          "address": "3.145.80.142",
           "encryption": "none",
           "flow": "xtls-rprx-vision",
           "id": "2e0697c0-5d99-4502-a001-bb90e6476d2a",
@@ -20869,35 +20869,6 @@
         "tag": "s-1",
         "protocol": "vless",
         "settings": {
-          "address": "153.52.143.118",
-          "encryption": "none",
-          "flow": "xtls-rprx-vision",
-          "id": "ccb8ff48-3934-4250-b4ec-bb76b95d154f",
-          "level": 8,
-          "port": 443,
-          "security": "auto"
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "fingerprint": "firefox",
-            "publicKey": "NaCZ-sS4poEbFwKmD7ePAVyc5OhHxsD9nkAStjXkoWs",
-            "serverName": "de2.fox-lisa.ru",
-            "show": false,
-            "shortId": "027af64166562b09"
-          },
-          "security": "reality",
-          "tcpSettings": {
-            "header": {
-              "type": "none"
-            }
-          }
-        }
-      },
-      {
-        "tag": "s-2",
-        "protocol": "vless",
-        "settings": {
           "address": "45.144.112.55",
           "encryption": "none",
           "flow": "xtls-rprx-vision",
@@ -20924,7 +20895,7 @@
         }
       },
       {
-        "tag": "s-3",
+        "tag": "s-2",
         "protocol": "vless",
         "settings": {
           "address": "167.17.69.171",
@@ -20953,7 +20924,7 @@
         }
       },
       {
-        "tag": "s-4",
+        "tag": "s-3",
         "protocol": "vless",
         "settings": {
           "address": "47.253.226.114",
@@ -20981,7 +20952,7 @@
         }
       },
       {
-        "tag": "s-5",
+        "tag": "s-4",
         "protocol": "vless",
         "settings": {
           "address": "31.57.185.32",
@@ -21010,7 +20981,7 @@
         }
       },
       {
-        "tag": "s-6",
+        "tag": "s-5",
         "protocol": "vless",
         "settings": {
           "address": "176.126.122.168",
@@ -21038,7 +21009,7 @@
         }
       },
       {
-        "tag": "s-7",
+        "tag": "s-6",
         "protocol": "vless",
         "settings": {
           "address": "45.91.138.179",
@@ -21067,7 +21038,7 @@
         }
       },
       {
-        "tag": "s-8",
+        "tag": "s-7",
         "protocol": "vless",
         "settings": {
           "address": "170.168.32.125",
@@ -21096,7 +21067,7 @@
         }
       },
       {
-        "tag": "s-9",
+        "tag": "s-8",
         "protocol": "vless",
         "settings": {
           "address": "179.255.148.66",
@@ -21125,7 +21096,7 @@
         }
       },
       {
-        "tag": "s-10",
+        "tag": "s-9",
         "protocol": "vless",
         "settings": {
           "address": "47.251.25.74",
@@ -21153,7 +21124,7 @@
         }
       },
       {
-        "tag": "s-11",
+        "tag": "s-10",
         "protocol": "vless",
         "settings": {
           "address": "45.198.96.210",
@@ -21182,7 +21153,7 @@
         }
       },
       {
-        "tag": "s-12",
+        "tag": "s-11",
         "protocol": "vless",
         "settings": {
           "address": "195.211.98.43",
@@ -21211,7 +21182,7 @@
         }
       },
       {
-        "tag": "s-13",
+        "tag": "s-12",
         "protocol": "vless",
         "settings": {
           "address": "38.244.5.231",
@@ -21240,7 +21211,7 @@
         }
       },
       {
-        "tag": "s-14",
+        "tag": "s-13",
         "protocol": "vless",
         "settings": {
           "address": "48.102.167.254",
@@ -21269,7 +21240,7 @@
         }
       },
       {
-        "tag": "s-15",
+        "tag": "s-14",
         "protocol": "vless",
         "settings": {
           "address": "48.102.170.205",
@@ -21298,7 +21269,7 @@
         }
       },
       {
-        "tag": "s-16",
+        "tag": "s-15",
         "protocol": "vless",
         "settings": {
           "address": "48.102.204.67",
@@ -21327,7 +21298,7 @@
         }
       },
       {
-        "tag": "s-17",
+        "tag": "s-16",
         "protocol": "vless",
         "settings": {
           "address": "31.57.185.176",
@@ -21356,7 +21327,7 @@
         }
       },
       {
-        "tag": "s-18",
+        "tag": "s-17",
         "protocol": "vless",
         "settings": {
           "address": "5.78.28.48",
@@ -21385,7 +21356,7 @@
         }
       },
       {
-        "tag": "s-19",
+        "tag": "s-18",
         "protocol": "vless",
         "settings": {
           "address": "18.225.235.105",
@@ -21414,10 +21385,39 @@
         }
       },
       {
-        "tag": "s-20",
+        "tag": "s-19",
         "protocol": "vless",
         "settings": {
           "address": "3.141.105.203",
+          "encryption": "none",
+          "flow": "xtls-rprx-vision",
+          "id": "2e0697c0-5d99-4502-a001-bb90e6476d2a",
+          "level": 8,
+          "port": 443,
+          "security": "auto"
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "realitySettings": {
+            "fingerprint": "chrome",
+            "publicKey": "uKTuTKW9v75dRfEvCTO-VwYKi9qB_qyhNdyOpq4ceEo",
+            "serverName": "dl.google.com",
+            "show": false,
+            "shortId": "cd80d90bee24205f"
+          },
+          "security": "reality",
+          "tcpSettings": {
+            "header": {
+              "type": "none"
+            }
+          }
+        }
+      },
+      {
+        "tag": "s-20",
+        "protocol": "vless",
+        "settings": {
+          "address": "3.145.80.142",
           "encryption": "none",
           "flow": "xtls-rprx-vision",
           "id": "2e0697c0-5d99-4502-a001-bb90e6476d2a",
